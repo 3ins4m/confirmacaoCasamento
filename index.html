@@ -9,7 +9,19 @@
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
   <div class="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full">
     <h1 class="text-2xl font-bold mb-4 text-center">Convite de Casamento</h1>
-    <p class="text-center mb-6">Junte-se a nós para celebrar nosso grande dia!<br>Dia 15 de Outubro de 2025 às 17h<br>Local: Espaço Jardim, São Paulo - SP</p>
+    <p class="text-center mb-4">
+      Junte-se a nós para celebrar nosso grande dia!<br>
+      Dia 26 de Julho de 2025 às 15h30<br>
+      <strong>Local da cerimônia:</strong> Capela Santo Antonio da Bica - RJ<br>
+      <strong>Confraternização:</strong> Don Pascual - RJ
+    </p>
+
+    <div id="contador" class="text-center text-lg font-semibold text-red-600 mb-4"></div>
+
+    <div class="flex flex-col items-center space-y-2 mb-6">
+      <a href="https://maps.app.goo.gl/tYxichPFWNGxq47B8" target="_blank" class="text-blue-600 underline">📍 Cerimônia - Ver no Google Maps</a>
+      <a href="https://maps.app.goo.gl/aeE67cmPFxbFAsQ57" target="_blank" class="text-blue-600 underline">📍 Confraternização - Ver no Google Maps</a>
+    </div>
 
     <form id="rsvp-form" class="space-y-4">
       <input type="text" id="nome" class="w-full px-4 py-2 border rounded-lg" placeholder="Seu nome completo" required>
@@ -50,6 +62,30 @@
         mensagem.textContent = 'Erro ao confirmar. Tente novamente mais tarde.';
       }
     });
+
+    // Contador regressivo
+    const contador = document.getElementById('contador');
+    const eventoData = new Date('2025-10-15T17:00:00');
+
+    function atualizarContador() {
+      const agora = new Date();
+      const diff = eventoData - agora;
+
+      if (diff <= 0) {
+        contador.textContent = 'É hoje! 💍';
+        return;
+      }
+
+      const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutos = Math.floor((diff / (1000 * 60)) % 60);
+      const segundos = Math.floor((diff / 1000) % 60);
+
+      contador.textContent = `Faltam ${dias}d ${horas}h ${minutos}m ${segundos}s para o casamento!`;
+    }
+
+    setInterval(atualizarContador, 1000);
+    atualizarContador();
   </script>
 </body>
 </html>
