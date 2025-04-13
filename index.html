@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convite de Casamento</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+  <div class="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full">
+    <h1 class="text-2xl font-bold mb-4 text-center">Convite de Casamento</h1>
+    <p class="text-center mb-6">Junte-se a nós para celebrar nosso grande dia!<br>Dia 15 de Outubro de 2025 às 17h<br>Local: Espaço Jardim, São Paulo - SP</p>
+
+    <form id="rsvp-form" class="space-y-4">
+      <input type="text" id="nome" class="w-full px-4 py-2 border rounded-lg" placeholder="Seu nome completo" required>
+      <input type="text" id="codigo" class="w-full px-4 py-2 border rounded-lg" placeholder="Código secreto" required>
+      <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg">Confirmar Presença</button>
+    </form>
+
+    <div id="mensagem" class="text-center mt-4 font-medium"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('rsvp-form');
+    const mensagem = document.getElementById('mensagem');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      mensagem.textContent = 'Verificando...';
+
+      const nome = document.getElementById('nome').value.trim();
+      const codigo = document.getElementById('codigo').value.trim();
+
+      if (!nome || !codigo) return;
+
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbxl_nVv-AQcqy4_ACc3AyfyR4FvydvgCEWiVGLKXLf6V_6luEPEvwAcKwr69cRF1UU1cg/exec', {
+          method: 'POST',
+          body: JSON.stringify({ nome, codigo }),
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'ok') {
+          mensagem.textContent = `Presença confirmada! Obrigado, ${data.nome}.`;
+        } else {
+          mensagem.textContent = data.mensagem;
+        }
+      } catch (err) {
+        mensagem.textContent = 'Erro ao confirmar. Tente novamente mais tarde.';
+      }
+    });
+  </script>
+</body>
+</html>
